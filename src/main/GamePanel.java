@@ -29,6 +29,8 @@ public class GamePanel extends JPanel implements Runnable{
 
     TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
+    Sound sound = new Sound();
+    Sound soundSFX = new Sound();
     Thread gameThread; // For Timing Purposes
     public CollisionChecker cChecker = new CollisionChecker(this);
     public Player player = new Player(this, keyH);
@@ -41,6 +43,11 @@ public class GamePanel extends JPanel implements Runnable{
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
+    }
+
+    public void setupGame()
+    {
+        playMusic(0, 0.05f);
     }
 
     public void startGameThread()
@@ -98,6 +105,30 @@ public class GamePanel extends JPanel implements Runnable{
         player.draw(g2);
 
         g2.dispose(); // Memory Saving
+    }
+
+    public void playMusic(int index, float volume)
+    {
+        sound.setFile(index);
+        sound.play(volume);
+        sound.loop();
+    }
+
+    public void stopMusic()
+    {
+        sound.stop();
+    }
+
+    public void playSFX(int index, float volume, boolean loop)
+    {
+        soundSFX.setFile(index);
+        soundSFX.play(volume);
+        if(loop) soundSFX.loop();
+    }
+
+    public void stopSFX()
+    {
+        soundSFX.stop();
     }
 
 }

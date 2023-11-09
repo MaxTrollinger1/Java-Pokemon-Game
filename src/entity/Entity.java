@@ -18,4 +18,5 @@ public class Entity {
     public Rectangle solidArea;
     public boolean collisionOn = false;
     public boolean triggerOn = false;
+    public boolean isMoving = false;
 }

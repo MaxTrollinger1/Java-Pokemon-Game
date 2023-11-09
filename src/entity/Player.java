@@ -16,6 +16,9 @@ public class Player extends Entity{
     public final int screenX;
     public final int screenY;
 
+    boolean playingFootsteps = false;
+    int curFootstep = -1;
+
     public Player(GamePanel gp, KeyHandler keyH)
     {
         this.gp = gp;
@@ -91,8 +94,11 @@ public class Player extends Entity{
         triggerOn = false;
         gp.cChecker.checkTile(this);
 
+        isMoving = !direction.equals("idle") && !collisionOn;
+        handleFootsteps();
+
         // If Collision
-        if(collisionOn == false)
+        if(!collisionOn)
         {
             switch(direction)
             {
@@ -159,4 +165,17 @@ public class Player extends Entity{
         g2.drawImage(image, screenX, screenY, gp.tileSize * sizeModifier, gp.tileSize * sizeModifier, null);
     }
 
+    public void handleFootsteps() {
+        if(isMoving && !playingFootsteps)
+        {
+            playingFootsteps = true;
+            curFootstep = triggerOn ? 2 : 1;
+            gp.playSFX(curFootstep, 0.2f, true);
+        }
+        else if ((!isMoving || ( triggerOn && curFootstep != 2) || ( !triggerOn && curFootstep != 1)) && playingFootsteps)
+        {
+            playingFootsteps = false;
+            gp.stopSFX();
+        }
+    }
 }
