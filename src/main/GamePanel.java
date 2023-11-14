@@ -4,6 +4,7 @@ import entity.Player;
 import tile.Tile;
 import tile.TileManager;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import java.awt.*;
 
@@ -22,24 +23,27 @@ public class GamePanel extends JPanel implements Runnable{
     //WORLD SETTINGS
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
-    public final int worldWidth = tileSize * maxWorldCol;
-    public final  int worldHeight = tileSize * maxWorldRow;
     //FPS
     int FPS = 60;
 
     TileManager tileM = new TileManager(this);
-    KeyHandler keyH = new KeyHandler();
+    KeyHandler keyH = new KeyHandler(this);
     Sound sound = new Sound();
     Sound soundSFX = new Sound();
     Thread gameThread; // For Timing Purposes
+    UIHandler uiHandler = new UIHandler(this);
     public CollisionChecker cChecker = new CollisionChecker(this);
     public Player player = new Player(this, keyH);
+
+    public int gameState;
+    public final int exitingState = -1;
+    public final int titleState = 0;
+    public final int inGameState = 1;
 
     public GamePanel()
     {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
 
-        this.setBackground(Color.decode("#9bd4c3"));
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
@@ -47,7 +51,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     public void setupGame()
     {
-        playMusic(0, 0.05f);
+        gameState = titleState;
     }
 
     public void startGameThread()
@@ -90,7 +94,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     public void update()
     {
-        player.update();
+        if(gameState == inGameState) player.update();
     }
 
     public void paintComponent(Graphics g) // JPanel Method (call super class)
@@ -99,12 +103,31 @@ public class GamePanel extends JPanel implements Runnable{
 
         //Handle Player
         Graphics2D g2 = (Graphics2D)g;
+        uiHandler.draw(g2);
 
-        tileM.draw(g2); // Draw tiles first
+        if(gameState == inGameState)
+        {
+            tileM.draw(g2); // Draw tiles first
 
-        player.draw(g2);
+            player.draw(g2);
+        }
 
         g2.dispose(); // Memory Saving
+    }
+
+    public void HandleStateChange(int newState)
+    {
+        gameState = newState;
+
+        if(gameState == inGameState)
+        {
+            playMusic(0, 0.05f);
+        }
+        else if(gameState == exitingState)
+        {
+            System.out.println("Exiting Game");
+            System.exit(0);
+        }
     }
 
     public void playMusic(int index, float volume)

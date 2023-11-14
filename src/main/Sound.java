@@ -9,13 +9,15 @@ import java.net.URL;
 public class Sound {
 
     Clip clip;
-    URL soundURL[] = new URL[30];
+    URL soundURL[] = new URL[20];
 
     public Sound()
     {
         soundURL[0] = getClass().getResource("/sound/NBT_Music.wav");
         soundURL[1] = getClass().getResource("/sound/footsteps.wav");
         soundURL[2] = getClass().getResource("/sound/leaves.wav");
+        soundURL[3] = getClass().getResource("/sound/UI_Click.wav");
+        soundURL[4] = getClass().getResource("/sound/Success.wav");
     }
 
     public void setFile(int index)
