@@ -1,24 +1,24 @@
 package main;
 
 import entity.Player;
-import tile.Tile;
 import tile.TileManager;
 
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import java.awt.*;
 
 public class GamePanel extends JPanel implements Runnable{
 
     // Screen Settings
-    final int originalTileSize = 16; // 16x16 Tile
+    final int tileSize = 16;
     final int scale = 3;
+    final int fpsConstant = 1000000000;
 
-    public final int tileSize = originalTileSize * scale; // 48x48
+    // 48x48
+    public final int scaledTileSize = tileSize * scale;
     public final int maxScreenCol = 16;
     public final int maxScreenRow = 12;
-    public final int screenWidth = tileSize * maxScreenCol; // 768 px
-    public final int screenHeight = tileSize * maxScreenRow; // 576 px
+    public final int screenWidth = scaledTileSize * maxScreenCol; // 768 px
+    public final int screenHeight = scaledTileSize * maxScreenRow; // 576 px
 
     //WORLD SETTINGS
     public final int maxWorldCol = 50;
@@ -27,13 +27,20 @@ public class GamePanel extends JPanel implements Runnable{
     int FPS = 60;
 
     TileManager tileM = new TileManager(this);
-    KeyHandler keyH = new KeyHandler(this);
+
+    // Sound
     Sound sound = new Sound();
     Sound soundSFX = new Sound();
-    Thread gameThread; // For Timing Purposes
+
+    // For Timing Purposes
+    Thread gameThread;
     UIHandler uiHandler = new UIHandler(this);
+
+    // Player
     public CollisionChecker cChecker = new CollisionChecker(this);
+    KeyHandler keyH = new KeyHandler(this);
     public Player player = new Player(this, keyH);
+
 
     public int gameState;
     public final int exitingState = -1;
@@ -52,6 +59,7 @@ public class GamePanel extends JPanel implements Runnable{
     public void setupGame()
     {
         gameState = titleState;
+        startGameThread();
     }
 
     public void startGameThread()
@@ -63,7 +71,7 @@ public class GamePanel extends JPanel implements Runnable{
     @Override
     public void run() { // Game Loop
 
-        double drawInterval = 1000000000 / FPS;
+        double drawInterval = (double)fpsConstant / FPS;
         double nextDrawTime = System.nanoTime() + drawInterval;
 
         while(gameThread != null) // Update ( Drawing and Updating Character Information)
@@ -86,7 +94,9 @@ public class GamePanel extends JPanel implements Runnable{
 
                 nextDrawTime += drawInterval;
 
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e)
+            {
                 throw new RuntimeException(e);
             }
         }
@@ -102,17 +112,17 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
 
         //Handle Player
-        Graphics2D g2 = (Graphics2D)g;
-        uiHandler.draw(g2);
+        Graphics2D graphics = (Graphics2D)g;
+        uiHandler.draw(graphics);
 
         if(gameState == inGameState)
         {
-            tileM.draw(g2); // Draw tiles first
+            tileM.draw(graphics); // Draw tiles first
 
-            player.draw(g2);
+            player.draw(graphics);
         }
 
-        g2.dispose(); // Memory Saving
+        graphics.dispose(); // Memory Saving
     }
 
     public void HandleStateChange(int newState)

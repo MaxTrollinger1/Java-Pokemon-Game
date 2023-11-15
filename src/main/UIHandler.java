@@ -16,7 +16,9 @@ public class UIHandler {
     {
         this.gp = gp;
 
+        //Loading Font
         InputStream is = getClass().getResourceAsStream("/font/pixel.ttf");
+
         try{
             pixel = Font.createFont(Font.TRUETYPE_FONT, is);
         } catch (IOException e) {
@@ -49,7 +51,7 @@ public class UIHandler {
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96f));
         String text = "331 Pokemon Game";
         int x = getXCenteredText(text);
-        int y = gp.tileSize * 3;
+        int y = gp.scaledTileSize * 3;
 
         //Shadow
         g2.setColor(Color.gray);
@@ -63,21 +65,21 @@ public class UIHandler {
 
         text = "PLAY";
         x = getXCenteredText(text);
-        y += gp.tileSize * 4;
+        y += gp.scaledTileSize * 4;
         g2.drawString(text, x, y);
         if(commandNum == 0)
         {
-            g2.drawString(")", x - gp.tileSize, y);
+            g2.drawString(")", x - gp.scaledTileSize, y);
         }
 
         text = "EXIT";
         x = getXCenteredText(text);
-        y += gp.tileSize * 2;
+        y += gp.scaledTileSize * 2;
         g2.drawString(text, x, y);
 
         if(commandNum == 1)
         {
-            g2.drawString(")", x - gp.tileSize, y);
+            g2.drawString(")", x - gp.scaledTileSize, y);
         }
     }
 

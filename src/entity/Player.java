@@ -25,24 +25,24 @@ public class Player extends Entity{
         this.keyH = keyH;
         sizeModifier = 1;
 
-        screenX = gp.screenWidth / 2 - (gp.tileSize * sizeModifier / 2);
-        screenY = gp.screenHeight / 2 - (gp.tileSize * sizeModifier / 2);
+        screenX = gp.screenWidth / 2 - (gp.scaledTileSize * sizeModifier / 2);
+        screenY = gp.screenHeight / 2 - (gp.scaledTileSize * sizeModifier / 2);
 
         solidArea = new Rectangle(8, 30, 25, 20); // Create our collision
 
         setDefaultValues();
-        getPlayerImage();
+        getPlayerSpriteSheet();
     }
 
     public void setDefaultValues()
     {
-        worldX = gp.tileSize * 23;
-        worldY = gp.tileSize * 21;
+        worldX = gp.scaledTileSize * 23;
+        worldY = gp.scaledTileSize * 21;
         speed = 4;
         direction = "down";
     }
 
-    public void getPlayerImage()
+    public void getPlayerSpriteSheet()
     {
         try{
             up1 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("player/Walk_Up_01.png"));
@@ -80,10 +80,10 @@ public class Player extends Entity{
 
     public void update()
     {
-        if(keyH.upPressed) { direction = "up"; }
-        else if (keyH.downPressed) { direction = "down"; }
-        else if (keyH.leftPressed) { direction = "left"; }
-        else if (keyH.rightPressed) { direction = "right"; }
+        if(keyH.upInput) { direction = "up"; }
+        else if (keyH.downInput) { direction = "down"; }
+        else if (keyH.leftInput) { direction = "left"; }
+        else if (keyH.rightInput) { direction = "right"; }
         else //No keys pressed
         {
             direction = "idle";
@@ -126,43 +126,35 @@ public class Player extends Entity{
     {
         BufferedImage image = null;
 
-        switch (direction)
-        {
+        BufferedImage[] images = null;
+
+        switch (direction) {
             case "up":
-                if(spriteNum == 1) image = up1;
-                if(spriteNum == 2) image = up2;
-                if(spriteNum == 3) image = up3;
-                if(spriteNum == 4) image = up4;
+                images = new BufferedImage[]{up1, up2, up3, up4};
                 break;
             case "down":
-                if(spriteNum == 1) image = down1;
-                if(spriteNum == 2) image = down2;
-                if(spriteNum == 3) image = down3;
-                if(spriteNum == 4) image = down4;
+                images = new BufferedImage[]{down1, down2, down3, down4};
                 break;
             case "left":
-                if(spriteNum == 1) image = left1;
-                if(spriteNum == 2) image = left2;
-                if(spriteNum == 3) image = left3;
-                if(spriteNum == 4) image = left4;
+                images = new BufferedImage[]{left1, left2, left3, left4};
                 break;
             case "right":
-                if(spriteNum == 1) image = right1;
-                if(spriteNum == 2) image = right2;
-                if(spriteNum == 3) image = right3;
-                if(spriteNum == 4) image = right4;
+                images = new BufferedImage[]{right1, right2, right3, right4};
                 break;
             default:
-                if(spriteNum == 1) image = idle1;
-                if(spriteNum == 2) image = idle2;
-                if(spriteNum == 3) image = idle3;
-                if(spriteNum == 4) image = idle4;
+                images = new BufferedImage[]{idle1, idle2, idle3, idle4};
                 break;
         }
 
-        if(!triggerOn) g2.drawImage(shadow, screenX, screenY, gp.tileSize * sizeModifier, gp.tileSize * sizeModifier + 5, null);
+        if (spriteNum >= 1 && spriteNum <= images.length) {
+            image = images[spriteNum - 1];
+        }
 
-        g2.drawImage(image, screenX, screenY, gp.tileSize * sizeModifier, gp.tileSize * sizeModifier, null);
+        // Draw Players Shadow
+        if(!triggerOn) g2.drawImage(shadow, screenX, screenY, gp.scaledTileSize * sizeModifier, gp.scaledTileSize * sizeModifier + 5, null);
+
+        // Draw Player
+        g2.drawImage(image, screenX, screenY, gp.scaledTileSize * sizeModifier, gp.scaledTileSize * sizeModifier, null);
     }
 
     public void handleFootsteps() {

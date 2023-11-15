@@ -4,23 +4,32 @@ import java.awt.*;
 
 public class Main {
 
+    public static final String gameTitle = "";
     public static void main(String[] args)
     {
-        JFrame window = new JFrame();
+        packGame();
+    }
 
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setResizable(false);
-        window.setTitle("2D Game");
+    public static void packGame()
+    {
+        JFrame frame = new JFrame();
 
+        // Set up the window
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
+        frame.setTitle(gameTitle);
+
+        // Load Behavior
         GamePanel gamePanel = new GamePanel();
-        window.add(gamePanel);
+        frame.add(gamePanel);
 
-        window.pack();
+        frame.pack();
 
-        window.setLocationRelativeTo(null); // Center
-        window.setVisible(true);
+        // Center to Middle
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
 
-        gamePanel.startGameThread();
+        // Start Behavior
         gamePanel.setupGame();
     }
 }
