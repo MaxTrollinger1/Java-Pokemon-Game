@@ -18,6 +18,7 @@ public class Sound {
         soundURL[2] = getClass().getResource("/sound/leaves.wav");
         soundURL[3] = getClass().getResource("/sound/UI_Click.wav");
         soundURL[4] = getClass().getResource("/sound/Success.wav");
+        soundURL[5] = getClass().getResource("/sound/PokeCenter.wav");
     }
 
     public void setFile(int index)
@@ -51,7 +52,7 @@ public class Sound {
 
     public void stop()
     {
-        clip.stop();
+        if(clip != null) clip.stop();
     }
 
 

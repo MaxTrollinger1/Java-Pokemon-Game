@@ -7,6 +7,7 @@ public class Main {
     public static final String gameTitle = "";
     public static void main(String[] args)
     {
+        Logger.LogMessage("Starting Build");
         packGame();
     }
 

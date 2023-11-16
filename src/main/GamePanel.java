@@ -45,7 +45,8 @@ public class GamePanel extends JPanel implements Runnable{
     public int gameState;
     public final int exitingState = -1;
     public final int titleState = 0;
-    public final int inGameState = 1;
+    public final int selectionState = 1;
+    public final int inGameState = 2;
 
     public GamePanel()
     {
@@ -131,7 +132,13 @@ public class GamePanel extends JPanel implements Runnable{
 
         if(gameState == inGameState)
         {
+            stopMusic();
             playMusic(0, 0.05f);
+        }
+        else if(gameState == selectionState)
+        {
+            stopMusic();
+            playMusic(5, 0.05f);
         }
         else if(gameState == exitingState)
         {

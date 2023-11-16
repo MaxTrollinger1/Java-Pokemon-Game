@@ -1,6 +1,8 @@
 package main;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -12,15 +14,21 @@ public class UIHandler {
 
     public int commandNum = 0;
 
+    //RES
+    BufferedImage selectionIcon;
+
     public UIHandler(GamePanel gp)
     {
         this.gp = gp;
 
-        //Loading Font
+        // Load Resources
+
         InputStream is = getClass().getResourceAsStream("/font/pixel.ttf");
 
         try{
             pixel = Font.createFont(Font.TRUETYPE_FONT, is);
+
+            selectionIcon = ImageIO.read(getClass().getClassLoader().getResourceAsStream("ui/selection.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (FontFormatException e) {
@@ -35,6 +43,10 @@ public class UIHandler {
         if(gp.gameState == gp.titleState)
         {
             drawTitle();
+        }
+        else if (gp.gameState == gp.selectionState)
+        {
+            drawSelection();
         }
         else if (gp.gameState == gp.inGameState)
         {
@@ -83,16 +95,76 @@ public class UIHandler {
         }
     }
 
-    public void onUIInput()
+    public void drawSelection()
     {
+        g2.setColor(Color.black);
+        g2.fillRect(0,0, gp.screenWidth, gp.screenHeight);
+
+        g2.setFont(pixel);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 80f));
+        String text = "Select Your Starter";
+        int x = getXCenteredText(text);
+        int y = gp.scaledTileSize * 3;
+
+        //Shadow
+        g2.setColor(Color.gray);
+        g2.drawString(text, x + 5, y + 5);
+
+        g2.setColor(Color.white);
+        g2.drawString(text, x, y);
+
+        //Selection
+
+        x = gp.screenWidth/2 - (gp.tileSize*5) / 2;
+        y += gp.tileSize*5;
+
+        x -= gp.tileSize * 10;
+        BufferedImage starterOne = gp.player.down1;
+        g2.drawImage(starterOne, x, y, gp.tileSize*5, gp.tileSize*5, null);
+
         if(commandNum == 0)
         {
-            gp.playSFX(4, 0.2f, false);
-            gp.HandleStateChange(gp.inGameState);
+            g2.drawImage(selectionIcon, x, y, gp.tileSize*5, gp.tileSize*5, null);
         }
-        else if(commandNum == 1)
+
+        x += gp.tileSize * 10;
+        BufferedImage starterTwo = gp.player.down2;
+        g2.drawImage(starterTwo, x, y, gp.tileSize*5, gp.tileSize*5, null);
+
+        if(commandNum == 1)
         {
-            gp.HandleStateChange(gp.exitingState);
+            g2.drawImage(selectionIcon, x, y, gp.tileSize*5, gp.tileSize*5, null);
+        }
+
+        x += gp.tileSize * 10;
+        BufferedImage starterThree = gp.player.down3;
+        g2.drawImage(starterThree, x, y, gp.tileSize*5, gp.tileSize*5, null);
+
+        if(commandNum == 2)
+        {
+            g2.drawImage(selectionIcon, x, y, gp.tileSize*5, gp.tileSize*5, null);
+        }
+    }
+
+    public void onUIInput()
+    {
+        if(gp.gameState == gp.titleState)
+        {
+            if(commandNum == 0)
+            {
+                gp.playSFX(4, 0.2f, false);
+                gp.HandleStateChange(gp.selectionState);
+            }
+            else if(commandNum == 1)
+            {
+                gp.HandleStateChange(gp.exitingState);
+            }
+        }
+        else if (gp.gameState == gp.selectionState)
+        {
+            //Store Selection Here <------------------------------------------------
+
+            gp.HandleStateChange(gp.inGameState);
         }
     }
 
