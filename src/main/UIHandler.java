@@ -16,6 +16,7 @@ public class UIHandler {
 
     //RES
     BufferedImage selectionIcon;
+    BufferedImage battleBG;
 
     public UIHandler(GamePanel gp)
     {
@@ -29,6 +30,7 @@ public class UIHandler {
             pixel = Font.createFont(Font.TRUETYPE_FONT, is);
 
             selectionIcon = ImageIO.read(getClass().getClassLoader().getResourceAsStream("ui/selection.png"));
+            battleBG = ImageIO.read(getClass().getClassLoader().getResourceAsStream("scenes/BattleScene.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (FontFormatException e) {
@@ -52,6 +54,10 @@ public class UIHandler {
         {
             drawGame();
         }
+        else if (gp.gameState == gp.battleState)
+        {
+            drawBattle();
+        }
     }
 
     public void drawTitle()
@@ -61,6 +67,7 @@ public class UIHandler {
 
         g2.setFont(pixel);
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96f));
+
         String text = "331 Pokemon Game";
         int x = getXCenteredText(text);
         int y = gp.scaledTileSize * 3;
@@ -171,6 +178,20 @@ public class UIHandler {
     public void drawGame()
     {
         gp.setBackground(Color.decode("#9bd4c3"));
+    }
+
+    public void drawBattle()
+    {
+        gp.setBackground(Color.black);
+        int x = 0;
+        int y = gp.screenHeight / 2;
+
+        int scale = 37;
+
+        x = gp.screenWidth/2 - (gp.tileSize*scale) / 2;
+        y -= (gp.tileSize * scale) / 2;
+
+        g2.drawImage(battleBG, x, y, gp.tileSize*scale, gp.tileSize*scale, null);
     }
 
     public int getXCenteredText(String text)

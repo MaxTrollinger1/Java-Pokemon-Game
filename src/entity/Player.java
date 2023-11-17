@@ -2,11 +2,13 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import main.Logger;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Random;
 
 public class Player extends Entity{
 
@@ -18,6 +20,14 @@ public class Player extends Entity{
 
     boolean playingFootsteps = false;
     int curFootstep = -1;
+
+    // Trigger Check
+    public final int maxTriggerCheck = 120; // Every 2 Seconds Check For Trigger
+    int curTriggerCheck = 0;
+
+    // Game Options
+
+    public final int WildAttackPercentage = 25; // Percentage / 100
 
     public Player(GamePanel gp, KeyHandler keyH)
     {
@@ -80,6 +90,7 @@ public class Player extends Entity{
 
     public void update()
     {
+        curTriggerCheck++;
         if(keyH.upInput) { direction = "up"; }
         else if (keyH.downInput) { direction = "down"; }
         else if (keyH.leftInput) { direction = "left"; }
@@ -88,6 +99,8 @@ public class Player extends Entity{
         {
             direction = "idle";
         }
+
+        if(gp.gameState != gp.inGameState) direction = "idle";
 
         //Check Tile Collision
         collisionOn = false;
@@ -107,6 +120,15 @@ public class Player extends Entity{
                 case "left": worldX -= speed; break;
                 case "right": worldX += speed; break;
             }
+        }
+
+        if(curTriggerCheck > maxTriggerCheck)
+        {
+            if(triggerOn)
+            {
+                CheckBattle();
+            }
+            curTriggerCheck = 0;
         }
 
         spriteCounter++;
@@ -166,6 +188,20 @@ public class Player extends Entity{
         }
         else if ((!isMoving || ( triggerOn && curFootstep != 2) || ( !triggerOn && curFootstep != 1)) && playingFootsteps)
         {
+            playingFootsteps = false;
+            gp.stopSFX();
+        }
+    }
+
+    public void CheckBattle()
+    {
+        int ran = (int)(Math.random()*100);
+
+        if(ran < WildAttackPercentage)
+        {
+            Logger.LogMessage("Load Battle Scene");
+            gp.HandleStateChange(gp.battleState);
+            isMoving = false;
             playingFootsteps = false;
             gp.stopSFX();
         }

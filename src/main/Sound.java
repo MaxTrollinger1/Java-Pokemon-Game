@@ -19,6 +19,7 @@ public class Sound {
         soundURL[3] = getClass().getResource("/sound/UI_Click.wav");
         soundURL[4] = getClass().getResource("/sound/Success.wav");
         soundURL[5] = getClass().getResource("/sound/PokeCenter.wav");
+        soundURL[6] = getClass().getResource("/sound/Battle.wav");
     }
 
     public void setFile(int index)

@@ -24,21 +24,24 @@ public class KeyHandler implements KeyListener {
 
         handleUIInput(e);
 
-        if(code == KeyEvent.VK_W)
+        if(gp.gameState == gp.inGameState)
         {
-            upInput = true;
-        }
-        if(code == KeyEvent.VK_S)
-        {
-            downInput = true;
-        }
-        if(code == KeyEvent.VK_A)
-        {
-            leftInput = true;
-        }
-        if(code == KeyEvent.VK_D)
-        {
-            rightInput = true;
+            if(code == KeyEvent.VK_W)
+            {
+                upInput = true;
+            }
+            if(code == KeyEvent.VK_S)
+            {
+                downInput = true;
+            }
+            if(code == KeyEvent.VK_A)
+            {
+                leftInput = true;
+            }
+            if(code == KeyEvent.VK_D)
+            {
+                rightInput = true;
+            }
         }
 
         if(code == KeyEvent.VK_ENTER)
