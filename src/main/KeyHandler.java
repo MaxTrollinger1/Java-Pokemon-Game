@@ -133,5 +133,33 @@ public class KeyHandler implements KeyListener {
                 gp.uiHandler.onUIInput();
             }
         }
+        else if(gp.gameState == gp.battleState)
+        {
+            if(code == KeyEvent.VK_A)
+            {
+                gp.uiHandler.commandNum--;
+                gp.playSFX(3, 0.2f, false);
+
+                if(gp.uiHandler.commandNum < 0)
+                {
+                    gp.uiHandler.commandNum = 1;
+                }
+            }
+            if(code == KeyEvent.VK_D)
+            {
+                gp.uiHandler.commandNum++;
+                gp.playSFX(3, 0.2f, false);
+
+                if(gp.uiHandler.commandNum > 2)
+                {
+                    gp.uiHandler.commandNum = 0;
+                }
+            }
+
+            if(code == KeyEvent.VK_ENTER)
+            {
+                gp.uiHandler.onUIInput();
+            }
+        }
     }
 }

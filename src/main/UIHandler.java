@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.Buffer;
 
 public class UIHandler {
 
@@ -16,6 +17,7 @@ public class UIHandler {
 
     //RES
     BufferedImage selectionIcon;
+    BufferedImage bSelectionIcon;
     BufferedImage battleBG;
 
     public UIHandler(GamePanel gp)
@@ -31,6 +33,9 @@ public class UIHandler {
 
             selectionIcon = ImageIO.read(getClass().getClassLoader().getResourceAsStream("ui/selection.png"));
             battleBG = ImageIO.read(getClass().getClassLoader().getResourceAsStream("scenes/BattleScene.png"));
+
+            bSelectionIcon = selectionIcon;
+            bSelectionIcon.setRGB(0,0,0);
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (FontFormatException e) {
@@ -192,6 +197,55 @@ public class UIHandler {
         y -= (gp.tileSize * scale) / 2;
 
         g2.drawImage(battleBG, x, y, gp.tileSize*scale, gp.tileSize*scale, null);
+
+
+        // Drawing UI
+        g2.setFont(pixel);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 40f));
+
+        int textPadding = 30;
+
+        //Attack One
+        String attackOneText = "Attack One";
+
+        x = ((getXCenteredText(attackOneText) / 2) + textPadding) - 50;
+        y = gp.screenHeight - 10;
+
+        g2.setColor(Color.black);
+        g2.drawString(attackOneText, x, y);
+
+        if(commandNum == 0)
+        {
+            g2.drawString(")", x - gp.scaledTileSize / 3, y);
+        }
+
+        //Attack Two
+        String attackTwoText = "Attack Two";
+
+        x = ((getXCenteredText(attackTwoText)) - textPadding) + 50;
+        y = gp.screenHeight - 10;
+
+        g2.setColor(Color.black);
+        g2.drawString(attackTwoText, x, y);
+
+        if(commandNum == 1)
+        {
+            g2.drawString(")", x - gp.scaledTileSize / 3, y);
+        }
+
+        //Run Option
+        String runText = "Run";
+
+        x = (((getXCenteredText(runText) / 2) + getXCenteredText(runText)) - textPadding) + 50;
+        y = gp.screenHeight - 10;
+
+        g2.setColor(Color.black);
+        g2.drawString(runText, x, y);
+
+        if(commandNum == 2)
+        {
+            g2.drawString(")", x - gp.scaledTileSize / 3, y);
+        }
     }
 
     public int getXCenteredText(String text)
