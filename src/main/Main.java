@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class Main {
 
-    public static final String gameTitle = "";
+    public static final String gameTitle = "Poke Game";
     public static void main(String[] args)
     {
         Logger.LogMessage("Starting Build");
