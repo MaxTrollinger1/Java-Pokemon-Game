@@ -30,6 +30,8 @@ public class Main {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
+        PokemonGenerator.GeneratePokemon();
+
         // Start Behavior
         gamePanel.setupGame();
     }

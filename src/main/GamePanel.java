@@ -1,5 +1,6 @@
 package main;
 
+import entity.Moves;
 import entity.Player;
 import tile.TileManager;
 
@@ -31,6 +32,7 @@ public class GamePanel extends JPanel implements Runnable{
     // Sound
     Sound sound = new Sound();
     Sound soundSFX = new Sound();
+    Sound loopSoundSFX = new Sound();
 
     // For Timing Purposes
     Thread gameThread;
@@ -40,6 +42,11 @@ public class GamePanel extends JPanel implements Runnable{
     public CollisionChecker cChecker = new CollisionChecker(this);
     KeyHandler keyH = new KeyHandler(this);
     public Player player = new Player(this, keyH);
+
+    // Enemy
+
+    public Enemy[] enemies = new Enemy[5];
+    public BattleManager battleManager = new BattleManager();
 
 
     public int gameState;
@@ -61,6 +68,7 @@ public class GamePanel extends JPanel implements Runnable{
     public void setupGame()
     {
         gameState = titleState;
+        PokemonGenerator.SetupEnemy(this);
         startGameThread();
     }
 
@@ -130,20 +138,20 @@ public class GamePanel extends JPanel implements Runnable{
     public void HandleStateChange(int newState)
     {
         gameState = newState;
+        stopLoopSFX();
+        stopMusic();
 
         if(gameState == inGameState)
         {
-            stopMusic();
             playMusic(0, 0.05f);
         }
         else if(gameState == battleState)
         {
-            stopMusic();
             playMusic(6, 0.03f);
+            battleManager.InitializeBattle(this);
         }
         else if(gameState == selectionState)
         {
-            stopMusic();
             playMusic(5, 0.05f);
         }
         else if(gameState == exitingState)
@@ -165,11 +173,22 @@ public class GamePanel extends JPanel implements Runnable{
         sound.stop();
     }
 
-    public void playSFX(int index, float volume, boolean loop)
+    public void playLoopSFX(int index, float volume)
+    {
+        loopSoundSFX.setFile(index);
+        loopSoundSFX.play(volume);
+        loopSoundSFX.loop();
+    }
+
+    public void stopLoopSFX()
+    {
+        loopSoundSFX.stop();
+    }
+
+    public void playSFX(int index, float volume)
     {
         soundSFX.setFile(index);
         soundSFX.play(volume);
-        if(loop) soundSFX.loop();
     }
 
     public void stopSFX()

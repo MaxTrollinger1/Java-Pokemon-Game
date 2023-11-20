@@ -4,19 +4,21 @@ public class Moves {
     private int basePower;
     private int Accuracy;
     private String moveName;
+    private int attackSound;
     private boolean isSpecial;
 
 
-    public Moves(int basePower, int Accuracy, String moveName, boolean isSpecial){
-        this.Accuracy = Accuracy;
+    public Moves(String moveName, int basePower, int Accuracy, int attackSound){
         this.basePower = basePower;
         this.moveName = moveName;
-        this.isSpecial = isSpecial;
+        this.Accuracy = Accuracy;
+        this.attackSound = attackSound;
     }
 
     public int getBasePower() {
         return basePower;
     }
+    public int getAttackSound() { return attackSound;}
 
     public int getAccuracy() {
         return Accuracy;
@@ -41,22 +43,4 @@ public class Moves {
     public boolean isSpecial() {
         return isSpecial;
     }
-}
-class Flamethrower extends Moves{
-    private Fire fireType;
-
-    public Flamethrower(int basePower, int Accuracy, String moveName, boolean isSpecial, Fire fireType){
-        super(basePower, Accuracy, moveName, isSpecial);
-        this.fireType = fireType;
-    }
-
-    public Fire getFireType() {
-        return fireType;
-    }
-
-    public void setFireType(Fire fireType) {
-        this.fireType = fireType;
-    }
-
-
 }

@@ -82,7 +82,7 @@ public class KeyHandler implements KeyListener {
             if(code == KeyEvent.VK_W)
             {
                 gp.uiHandler.commandNum--;
-                gp.playSFX(3, 0.2f, false);
+                gp.playSFX(3, 0.2f);
 
                 if(gp.uiHandler.commandNum < 0)
                 {
@@ -92,7 +92,7 @@ public class KeyHandler implements KeyListener {
             if(code == KeyEvent.VK_S)
             {
                 gp.uiHandler.commandNum++;
-                gp.playSFX(3, 0.2f, false);
+                gp.playSFX(3, 0.2f);
 
                 if(gp.uiHandler.commandNum > 1)
                 {
@@ -110,7 +110,7 @@ public class KeyHandler implements KeyListener {
             if(code == KeyEvent.VK_A)
             {
                 gp.uiHandler.commandNum--;
-                gp.playSFX(3, 0.2f, false);
+                gp.playSFX(3, 0.2f);
 
                 if(gp.uiHandler.commandNum < 0)
                 {
@@ -120,7 +120,7 @@ public class KeyHandler implements KeyListener {
             if(code == KeyEvent.VK_D)
             {
                 gp.uiHandler.commandNum++;
-                gp.playSFX(3, 0.2f, false);
+                gp.playSFX(3, 0.2f);
 
                 if(gp.uiHandler.commandNum > 2)
                 {
@@ -138,7 +138,7 @@ public class KeyHandler implements KeyListener {
             if(code == KeyEvent.VK_A)
             {
                 gp.uiHandler.commandNum--;
-                gp.playSFX(3, 0.2f, false);
+                gp.playSFX(3, 0.2f);
 
                 if(gp.uiHandler.commandNum < 0)
                 {
@@ -148,7 +148,7 @@ public class KeyHandler implements KeyListener {
             if(code == KeyEvent.VK_D)
             {
                 gp.uiHandler.commandNum++;
-                gp.playSFX(3, 0.2f, false);
+                gp.playSFX(3, 0.2f);
 
                 if(gp.uiHandler.commandNum > 2)
                 {

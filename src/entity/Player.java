@@ -1,5 +1,6 @@
 package entity;
 
+import main.Enemy;
 import main.GamePanel;
 import main.KeyHandler;
 import main.Logger;
@@ -15,6 +16,8 @@ public class Player extends Entity{
     GamePanel gp;
     KeyHandler keyH;
 
+    public Pokemon currentStarter;
+
     public final int screenX;
     public final int screenY;
 
@@ -27,7 +30,7 @@ public class Player extends Entity{
 
     // Game Options
 
-    public final int WildAttackPercentage = 25; // Percentage / 100
+    public final int WildAttackPercentage = 50; // Percentage / 100
 
     public Player(GamePanel gp, KeyHandler keyH)
     {
@@ -184,12 +187,12 @@ public class Player extends Entity{
         {
             playingFootsteps = true;
             curFootstep = triggerOn ? 2 : 1;
-            gp.playSFX(curFootstep, 0.2f, true);
+            gp.playLoopSFX(curFootstep, 0.2f);
         }
         else if ((!isMoving || ( triggerOn && curFootstep != 2) || ( !triggerOn && curFootstep != 1)) && playingFootsteps)
         {
             playingFootsteps = false;
-            gp.stopSFX();
+            gp.stopLoopSFX();
         }
     }
 
@@ -203,7 +206,6 @@ public class Player extends Entity{
             gp.HandleStateChange(gp.battleState);
             isMoving = false;
             playingFootsteps = false;
-            gp.stopSFX();
         }
     }
 }

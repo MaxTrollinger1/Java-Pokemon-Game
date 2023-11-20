@@ -20,6 +20,17 @@ public class UIHandler {
     BufferedImage bSelectionIcon;
     BufferedImage battleBG;
 
+    public String battleText = "";
+
+    // Animation
+
+    double currentAngle = 0;
+    double currentEnemyAngle = 0;
+    int currentPositionModifier = 0;
+    int currentEnemyPositionModifier = 0;
+    int maxLerpDistance = 5;
+    float lerpSpeed = 0.08f;
+
     public UIHandler(GamePanel gp)
     {
         this.gp = gp;
@@ -131,7 +142,7 @@ public class UIHandler {
         y += gp.tileSize*5;
 
         x -= gp.tileSize * 10;
-        BufferedImage starterOne = gp.player.down1;
+        BufferedImage starterOne = PokemonGenerator.starters[0].getSprite();
         g2.drawImage(starterOne, x, y, gp.tileSize*5, gp.tileSize*5, null);
 
         if(commandNum == 0)
@@ -140,7 +151,7 @@ public class UIHandler {
         }
 
         x += gp.tileSize * 10;
-        BufferedImage starterTwo = gp.player.down2;
+        BufferedImage starterTwo = PokemonGenerator.starters[1].getSprite();
         g2.drawImage(starterTwo, x, y, gp.tileSize*5, gp.tileSize*5, null);
 
         if(commandNum == 1)
@@ -149,7 +160,7 @@ public class UIHandler {
         }
 
         x += gp.tileSize * 10;
-        BufferedImage starterThree = gp.player.down3;
+        BufferedImage starterThree = PokemonGenerator.starters[2].getSprite();
         g2.drawImage(starterThree, x, y, gp.tileSize*5, gp.tileSize*5, null);
 
         if(commandNum == 2)
@@ -164,7 +175,7 @@ public class UIHandler {
         {
             if(commandNum == 0)
             {
-                gp.playSFX(4, 0.2f, false);
+                gp.playSFX(4, 0.2f);
                 gp.HandleStateChange(gp.selectionState);
             }
             else if(commandNum == 1)
@@ -174,9 +185,25 @@ public class UIHandler {
         }
         else if (gp.gameState == gp.selectionState)
         {
-            //Store Selection Here <------------------------------------------------
+            gp.player.currentStarter = PokemonGenerator.starters[commandNum];
 
             gp.HandleStateChange(gp.inGameState);
+        }
+        else if (gp.gameState == gp.battleState)
+        {
+            if(commandNum == 0)
+            {
+                gp.battleManager.PlayerAttack(gp.player.currentStarter, gp.player.currentStarter.getPrimaryMove());
+            }
+            else if(commandNum == 1)
+            {
+                gp.battleManager.PlayerAttack(gp.player.currentStarter, gp.player.currentStarter.getSecondaryMove());
+            }
+            else if(commandNum == 2)
+            {
+                gp.playSFX(7, 0.2f);
+                gp.HandleStateChange(gp.inGameState);
+            }
         }
     }
 
@@ -202,50 +229,118 @@ public class UIHandler {
         // Drawing UI
         g2.setFont(pixel);
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 40f));
-
-        int textPadding = 30;
-
-        //Attack One
-        String attackOneText = "Attack One";
-
-        x = ((getXCenteredText(attackOneText) / 2) + textPadding) - 50;
-        y = gp.screenHeight - 10;
-
         g2.setColor(Color.black);
-        g2.drawString(attackOneText, x, y);
 
-        if(commandNum == 0)
+        if(gp.battleManager.showAttackUI)
         {
-            g2.drawString(")", x - gp.scaledTileSize / 3, y);
+
+            int textPadding = 30;
+
+            //Attack One
+            String attackOneText = gp.player.currentStarter.getPrimaryMove().getMoveName();
+
+            x = ((getXCenteredText(attackOneText) / 2) + textPadding) - 50;
+            y = gp.screenHeight - 10;
+
+            g2.setColor(Color.black);
+            g2.drawString(attackOneText, x, y);
+
+            if(commandNum == 0)
+            {
+                g2.drawString(")", x - gp.scaledTileSize / 3, y);
+            }
+
+            //Attack Two
+            String attackTwoText = gp.player.currentStarter.getSecondaryMove().getMoveName();
+
+            x = ((getXCenteredText(attackTwoText)) - textPadding) + 50;
+            y = gp.screenHeight - 10;
+
+            g2.setColor(Color.black);
+            g2.drawString(attackTwoText, x, y);
+
+            if(commandNum == 1)
+            {
+                g2.drawString(")", x - gp.scaledTileSize / 3, y);
+            }
+
+            //Run Option
+            String runText = "Run";
+
+            x = (((getXCenteredText(runText) / 2) + getXCenteredText(runText)) - textPadding) + 50;
+            y = gp.screenHeight - 10;
+
+            g2.setColor(Color.black);
+            g2.drawString(runText, x, y);
+
+            if(commandNum == 2)
+            {
+                g2.drawString(")", x - gp.scaledTileSize / 3, y);
+            }
         }
 
-        //Attack Two
-        String attackTwoText = "Attack Two";
+        // Announcer Text
 
-        x = ((getXCenteredText(attackTwoText)) - textPadding) + 50;
-        y = gp.screenHeight - 10;
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 25f));
 
-        g2.setColor(Color.black);
-        g2.drawString(attackTwoText, x, y);
+        x = (gp.screenWidth / 2) - 250;
+        y = gp.screenHeight - 80;
+        g2.drawString(battleText, x, y);
 
-        if(commandNum == 1)
+        // Draw Pokemon
+
+        // - - Starter
+
+        double value = maxLerpDistance * Math.sin(currentAngle);
+        currentAngle += lerpSpeed;
+        currentPositionModifier = (int)value;
+
+        x = (gp.screenWidth / 6) + currentPositionModifier;
+        y = (int)(gp.screenHeight / 2.3);
+
+        if(!gp.battleManager.battleOver) {
+            g2.drawImage(gp.player.currentStarter.getSprite(), x, y, gp.tileSize * 15, gp.tileSize * 15, null);
+        }
+        else if(gp.battleManager.playerWon)
         {
-            g2.drawString(")", x - gp.scaledTileSize / 3, y);
+            g2.drawImage(gp.player.currentStarter.getSprite(), x, y, gp.tileSize * 15, gp.tileSize * 15, null);
         }
 
-        //Run Option
-        String runText = "Run";
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20f));
+        g2.setColor(Color.green);
 
-        x = (((getXCenteredText(runText) / 2) + getXCenteredText(runText)) - textPadding) + 50;
-        y = gp.screenHeight - 10;
+        g2.drawString("HP " + Integer.toString(gp.battleManager.playerHealth), x, y);
 
+        // -- Enemy
+
+        double enemyValue = maxLerpDistance * Math.sin(currentEnemyAngle);
+        currentEnemyAngle += lerpSpeed - 0.02;
+        currentEnemyPositionModifier = (int)enemyValue;
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 40f));
         g2.setColor(Color.black);
-        g2.drawString(runText, x, y);
 
-        if(commandNum == 2)
+        x = (int)(gp.screenWidth / 1.9) + currentEnemyPositionModifier;
+        y = (int)(gp.screenHeight / 8);
+
+
+        if(!gp.battleManager.battleOver)
         {
-            g2.drawString(")", x - gp.scaledTileSize / 3, y);
+            if(gp.battleManager.currentEnemy != null) {
+                g2.drawImage(gp.battleManager.currentEnemy.getSprite(), x, y, gp.tileSize*15, gp.tileSize*15, null);
+            }
         }
+        else if (!gp.battleManager.playerWon)
+        {
+            if(gp.battleManager.currentEnemy != null) {
+                g2.drawImage(gp.battleManager.currentEnemy.getSprite(), x, y, gp.tileSize*15, gp.tileSize*15, null);
+            }
+        }
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20f));
+        g2.setColor(Color.red);
+
+        g2.drawString("HP " + Integer.toString(gp.battleManager.enemyHealth), x, y);
+
     }
 
     public int getXCenteredText(String text)

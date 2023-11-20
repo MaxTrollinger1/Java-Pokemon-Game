@@ -1,6 +1,13 @@
 package entity;
 
+import java.awt.image.BufferedImage;
+
 public class Pokemon {
+
+    private String name;
+    private BufferedImage sprite;
+    private Moves primaryMove;
+    private Moves secondaryMove;
     private int HP;
     private int Attack;
     private int Defense;
@@ -8,14 +15,18 @@ public class Pokemon {
     private int SpecAttack;
     private int SpecDefense;
 
-    public Pokemon(int HP, int Attack, int Defense, int Speed, int SpecAttack, int SpecDefense){
+    public Pokemon(String name, BufferedImage sprite, int HP, Moves primaryMove, Moves secondaryMove){
+        this.name = name;
+        this.sprite = sprite;
         this.HP = HP;
-        this.Attack = Attack;
-        this.Defense = Defense;
-        this.Speed = Speed;
-        this.SpecAttack = SpecAttack;
-        this.SpecDefense = SpecDefense;
+        this.primaryMove = primaryMove;
+        this.secondaryMove = secondaryMove;
     }
+
+    public String getName() { return this.name;}
+    public BufferedImage getSprite() {return this.sprite;}
+    public Moves getPrimaryMove() { return this.primaryMove;}
+    public Moves getSecondaryMove() { return this.secondaryMove;}
     public int getHP() {
         return HP;
     }
@@ -53,29 +64,4 @@ public class Pokemon {
         SpecDefense = specDefense;
     }
 
-}
-class Charmander extends Pokemon{
-    private Fire fire;
-    private Moves move1;
-    public Charmander(int HP, int Attack, int Defense, int Speed, int SpecAttack, int SpecDefense, Fire fire, Moves move1){
-        super(HP, Attack, Defense, Speed, SpecAttack, SpecDefense);
-        this.fire = fire;
-        this.move1 = move1;
-    }
-
-    public Fire getFire() {
-        return fire;
-    }
-
-    public void setFire(Fire fire) {
-        this.fire = fire;
-    }
-
-    public Moves getMove1() {
-        return move1;
-    }
-
-    public void setMove1(Moves move1) {
-        this.move1 = move1;
-    }
 }

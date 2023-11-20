@@ -18,18 +18,3 @@ public class Types {
         this.type = type;
     }
 }
-class Fire extends Types{
-    List<String> weaknesses = new ArrayList<>();
-
-    public Fire(String type){
-        super(type);
-    }
-
-    public boolean checkWeakness(String checkType){
-        weaknesses.add("water");
-        if (weaknesses.contains(checkType)){
-            return true;
-        }
-        return false;
-    }
-}

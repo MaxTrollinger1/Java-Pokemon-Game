@@ -1,30 +1,25 @@
 package main;
 
+import entity.Moves;
+import entity.Pokemon;
+
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Random;
 
-public class Enemy {
+public class Enemy extends Pokemon {
 
-    public static void main(String[] args) {
-        // Create a list of moves
-        List<String> moves = new ArrayList<>();
-        moves.add("Move 1");
-        moves.add("Move 2");
-        moves.add("Move 3");
-        // Add more moves as needed
-
-        // Randomly select a move
-        String selectedMove = getRandomMove(moves);
-
-        // Print the selected move
-        System.out.println("Selected Move: " + selectedMove);
+    Moves[] moves;
+    public Enemy(String name, BufferedImage sprite, int HP, Moves primaryMove, Moves secondaryMove)
+    {
+        super(name, sprite, HP, primaryMove, secondaryMove);
     }
 
-    private static String getRandomMove(List<String> moves) {
-        Random random = new Random();
-        int randomIndex = random.nextInt(moves.size());
-        return moves.get(randomIndex);
+    public Moves getRandomMove() {
+        int randomNumber = (int) (Math.random() * 2);
+        return randomNumber == 0 ? getPrimaryMove() : getSecondaryMove();
     }
 }
 

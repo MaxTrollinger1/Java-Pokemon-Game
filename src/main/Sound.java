@@ -9,7 +9,7 @@ import java.net.URL;
 public class Sound {
 
     Clip clip;
-    URL soundURL[] = new URL[20];
+    URL soundURL[] = new URL[50];
 
     public Sound()
     {
@@ -20,6 +20,23 @@ public class Sound {
         soundURL[4] = getClass().getResource("/sound/Success.wav");
         soundURL[5] = getClass().getResource("/sound/PokeCenter.wav");
         soundURL[6] = getClass().getResource("/sound/Battle.wav");
+        soundURL[7] = getClass().getResource("/sound/Run.wav");
+        soundURL[8] = getClass().getResource("/sound/battleWon.wav");
+        soundURL[9] = getClass().getResource("/sound/attacks/Scratch.wav");
+        soundURL[10] = getClass().getResource("/sound/attacks/Slam.wav");
+        soundURL[11] = getClass().getResource("/sound/attacks/Cut.wav");
+        soundURL[12] = getClass().getResource("/sound/attacks/Growl.wav");
+        soundURL[13] = getClass().getResource("/sound/attacks/Headbutt.wav");
+        soundURL[14] = getClass().getResource("/sound/attacks/Fang.wav");
+        soundURL[15] = getClass().getResource("/sound/attacks/Pound.wav");
+        soundURL[16] = getClass().getResource("/sound/attacks/Rage.wav");
+        soundURL[17] = getClass().getResource("/sound/attacks/RazorWind.wav");
+        soundURL[18] = getClass().getResource("/sound/attacks/Roar.wav");
+        soundURL[19] = getClass().getResource("/sound/attacks/Tackle.wav");
+        soundURL[20] = getClass().getResource("/sound/attacks/VineWhip.wav");
+        soundURL[21] = getClass().getResource("/sound/attacks/WaterPulse.wav");
+        soundURL[22] = getClass().getResource("/sound/attacks/Flamethrower.wav");
+
     }
 
     public void setFile(int index)
