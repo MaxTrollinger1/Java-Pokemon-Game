@@ -16,13 +16,18 @@ public class CollisionChecker {
          * Checks for collision and triggers for the entity based on its movement.
          *
          * @param entity The entity to check for collision and triggers.
+         *
+         * Algorithm - Check the next tile over from the players position plus the players direction
+         * to determine if that tile is marked as a collision if so, block the player's movement.
          */
 
+        // gather entity's position, create a box around the entity to show where is solid
         int entityLeftWorldX = entity.worldX + entity.solidArea.x;
         int entityRightWorldX = entity.worldX + entity.solidArea.x + entity.solidArea.width;
         int entityTopWorldY = entity.worldY + entity.solidArea.y;
         int entityBottomWorldY = entity.worldY + entity.solidArea.y + entity.solidArea.height;
 
+        // get the row and cols
         int entityLeftCol = entityLeftWorldX/gp.scaledTileSize;
         int entityRightCol = entityRightWorldX/gp.scaledTileSize;
         int entityTopRow = entityTopWorldY/gp.scaledTileSize;
@@ -34,6 +39,7 @@ public class CollisionChecker {
         switch (entity.direction)
         {
             case "up":
+                // determine if solid or trigger
                 entityTopRow = (entityTopWorldY - entity.speed)/gp.scaledTileSize;
                 tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
@@ -47,6 +53,7 @@ public class CollisionChecker {
                 }
                 break;
             case "down":
+                // determine if solid or trigger
                 entityBottomRow = (entityBottomWorldY + entity.speed)/gp.scaledTileSize;
                 tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
                 tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
@@ -60,6 +67,7 @@ public class CollisionChecker {
                 }
                 break;
             case "left":
+                // determine if solid or trigger
                 entityLeftCol = (entityLeftWorldX - entity.speed)/gp.scaledTileSize;
                 tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
@@ -73,6 +81,7 @@ public class CollisionChecker {
                 }
                 break;
             case "right":
+                // determine if solid or trigger
                 entityRightCol = (entityRightWorldX + entity.speed)/gp.scaledTileSize;
                 tileNum1 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
                 tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];

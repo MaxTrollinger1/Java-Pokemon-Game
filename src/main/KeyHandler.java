@@ -20,10 +20,12 @@ public class KeyHandler implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        // Main functionality of handling key presses
         int code = e.getKeyCode();
 
         handleUIInput(e);
 
+        // if were in the game state
         if(gp.gameState == gp.inGameState)
         {
             if(code == KeyEvent.VK_W)
@@ -52,7 +54,7 @@ public class KeyHandler implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-
+        // reset booleans after the key is released
         int code = e.getKeyCode();
 
         if(code == KeyEvent.VK_W)

@@ -56,6 +56,7 @@ public class UIHandler {
     }
     public void draw(Graphics2D g2)
     {
+        // Determine which scene to draw based on gameState
         this.g2 = g2;
 
         if(gp.gameState == gp.titleState)
@@ -78,13 +79,15 @@ public class UIHandler {
 
     public void drawTitle()
     {
+        // Handle drawing the title scene
+
         g2.setColor(Color.black);
         g2.fillRect(0,0, gp.screenWidth, gp.screenHeight);
 
         g2.setFont(pixel);
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96f));
 
-        String text = "331 Pokemon Game";
+        String text = "Pokemon";
         int x = getXCenteredText(text);
         int y = gp.scaledTileSize * 3;
 
@@ -120,6 +123,8 @@ public class UIHandler {
 
     public void drawSelection()
     {
+        // Handle drawing selection screen
+        // Command num is the selection
         g2.setColor(Color.black);
         g2.fillRect(0,0, gp.screenWidth, gp.screenHeight);
 
@@ -171,6 +176,7 @@ public class UIHandler {
 
     public void onUIInput()
     {
+        // Determine where to handle the UI Input
         if(gp.gameState == gp.titleState)
         {
             if(commandNum == 0)
@@ -209,12 +215,15 @@ public class UIHandler {
 
     public void drawGame()
     {
+        // Draw Game scene
         gp.setBackground(Color.decode("#9bd4c3"));
     }
 
     public void drawBattle()
     {
+        // draw battle scene
         gp.setBackground(Color.black);
+        // use x and y for positions of GUI
         int x = 0;
         int y = gp.screenHeight / 2;
 
@@ -233,7 +242,6 @@ public class UIHandler {
 
         if(gp.battleManager.showAttackUI)
         {
-
             int textPadding = 30;
 
             //Attack One
@@ -345,6 +353,7 @@ public class UIHandler {
 
     public int getXCenteredText(String text)
     {
+        // determine the center based upon a string and return it
         int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         int x = gp.screenWidth/2 - length/2;
         return x;

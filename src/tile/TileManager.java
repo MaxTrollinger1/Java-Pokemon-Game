@@ -91,6 +91,7 @@ public class TileManager {
 
     public void draw(Graphics2D g2)
     {
+        // draw the map row by col
         int worldCol = 0;
         int worldRow = 0;
 
@@ -121,6 +122,7 @@ public class TileManager {
 
 
     void LoadSpecificTiles() {
+        // load all of the tiles and state collision or trigger
         try {
             String[][] tileData = {
                     {"3", "tiles/cliffs/Hills_Down_L.png", "true"},

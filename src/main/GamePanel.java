@@ -137,10 +137,12 @@ public class GamePanel extends JPanel implements Runnable{
 
     public void HandleStateChange(int newState)
     {
+        // Change Game State
         gameState = newState;
         stopLoopSFX();
         stopMusic();
 
+        // Determine next state
         if(gameState == inGameState)
         {
             playMusic(0, 0.05f);
@@ -160,6 +162,8 @@ public class GamePanel extends JPanel implements Runnable{
             System.exit(0);
         }
     }
+
+    // MUSIC / SOUND controls
 
     public void playMusic(int index, float volume)
     {

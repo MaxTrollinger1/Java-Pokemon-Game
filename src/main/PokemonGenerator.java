@@ -22,7 +22,7 @@ public class PokemonGenerator {
         BufferedImage charmanderSprite;
 
         try{
-            //Starters
+            // Load Image For Starters
             bulbSprite = ImageIO.read(PokemonGenerator.class.getClassLoader().getResourceAsStream("sprites/bulbasaur.png"));
             squirtleSprite = ImageIO.read(PokemonGenerator.class.getClassLoader().getResourceAsStream("sprites/squirtle.png"));
             charmanderSprite = ImageIO.read(PokemonGenerator.class.getClassLoader().getResourceAsStream("sprites/charmander.png"));
@@ -31,6 +31,7 @@ public class PokemonGenerator {
             throw new RuntimeException(e);
         }
 
+        // Generate Custom Moves
         Moves primaryMove = new Moves("Tackle", 10, 80, 19);
         Moves primaryMoveTwo = new Moves("Scratch", 8, 90, 9);
 
@@ -39,6 +40,7 @@ public class PokemonGenerator {
         Moves squirtleSecondaryMove = new Moves("Water Pulse", 18, 65, 21);
         Moves charmanderSecondaryMove = new Moves("Flamethrower", 22, 55, 22);
 
+        // Create Custom Pokemon (Starters)
         Pokemon Bulbasaur = new Pokemon("Bulbasaur", bulbSprite, 100, primaryMove, secondaryMove);
         Pokemon Squirtle = new Pokemon("Squirtle", squirtleSprite, 100, primaryMove, squirtleSecondaryMove);
         Pokemon Charmander = new Pokemon("Charmander", charmanderSprite, 100, primaryMoveTwo, charmanderSecondaryMove);
@@ -50,12 +52,14 @@ public class PokemonGenerator {
 
     public static void SetupEnemy(GamePanel gp)
     {
+
+        // Generate Custom Enemies
         BufferedImage eeveeSprite;
         BufferedImage pichuSprite;
         BufferedImage pidgeySprite;
         BufferedImage taurosSprite;
         BufferedImage woobatSprite;
-
+        // Load Images
         try{
             eeveeSprite = ImageIO.read(PokemonGenerator.class.getClassLoader().getResourceAsStream("sprites/eevee.png"));
             pichuSprite = ImageIO.read(PokemonGenerator.class.getClassLoader().getResourceAsStream("sprites/pichu.png"));
@@ -66,6 +70,7 @@ public class PokemonGenerator {
             throw new RuntimeException(e);
         }
 
+        // Create Moves
         Moves[] moves = new Moves[11];
         moves[0] = new Moves("Slam", 6, 90, 10);
         moves[1] = new Moves("Cut", 14, 80, 11);
@@ -78,6 +83,7 @@ public class PokemonGenerator {
         moves[8] = new Moves("Roar", 22, 50, 18);
         moves[9] = new Moves("Scratch", 10, 90, 9);
 
+        // Generate Enemies
         gp.enemies[0] = new Enemy("Pidgey", pidgeySprite, 80, moves[7], moves[9]);
         gp.enemies[1] = new Enemy("Tauros", taurosSprite, 110, moves[0], moves[3]);
         gp.enemies[2] = new Enemy("Woobat", woobatSprite, 60, moves[1], moves[9]);

@@ -13,6 +13,7 @@ public class Sound {
 
     public Sound()
     {
+        // Load all game sounds here
         soundURL[0] = getClass().getResource("/sound/NBT_Music.wav");
         soundURL[1] = getClass().getResource("/sound/footsteps.wav");
         soundURL[2] = getClass().getResource("/sound/leaves.wav");
@@ -41,6 +42,7 @@ public class Sound {
 
     public void setFile(int index)
     {
+        // Set the Audio file before playing
         try
         {
             AudioInputStream as = AudioSystem.getAudioInputStream(soundURL[index]);
@@ -55,6 +57,7 @@ public class Sound {
 
     public void play(float volume)
     {
+        // play the set audio file and incorporate the volume parameter
         if (volume < 0f || volume > 1f)
             throw new IllegalArgumentException("Volume not valid: " + volume);
         FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);

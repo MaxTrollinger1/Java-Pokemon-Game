@@ -57,6 +57,7 @@ public class Player extends Entity{
 
     public void getPlayerSpriteSheet()
     {
+        // Load players sprite sheet
         try{
             up1 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("player/Walk_Up_01.png"));
             up2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("player/Walk_Up_02.png"));
@@ -93,6 +94,9 @@ public class Player extends Entity{
 
     public void update()
     {
+        // UPDATE is called 60 times a second from the GamePanel
+
+        // Handle Input here
         curTriggerCheck++;
         if(keyH.upInput) { direction = "up"; }
         else if (keyH.downInput) { direction = "down"; }
@@ -134,6 +138,8 @@ public class Player extends Entity{
             curTriggerCheck = 0;
         }
 
+
+        // Increment the sprite counter to make the player animate
         spriteCounter++;
         if(spriteCounter > spriteUpdateInterval)
         {
@@ -149,6 +155,7 @@ public class Player extends Entity{
 
     public void draw(Graphics2D g2)
     {
+        // Draw player
         BufferedImage image = null;
 
         BufferedImage[] images = null;
@@ -183,6 +190,7 @@ public class Player extends Entity{
     }
 
     public void handleFootsteps() {
+        // Control footsteps using a boolean gate of playingFootsteps
         if(isMoving && !playingFootsteps)
         {
             playingFootsteps = true;
@@ -198,6 +206,7 @@ public class Player extends Entity{
 
     public void CheckBattle()
     {
+        // Check if the player has triggered a battle
         int ran = (int)(Math.random()*100);
 
         if(ran < WildAttackPercentage)
